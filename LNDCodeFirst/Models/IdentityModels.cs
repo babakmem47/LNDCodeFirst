@@ -1,6 +1,8 @@
 ﻿using System.Data.Entity;
+using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using LNDCodeFirst.EntityConfigurations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -20,6 +22,30 @@ namespace LNDCodeFirst.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
+        public DbSet<Province> Provinces { get; set; }
+
+        public DbSet<Person> Persons { get; set; }
+
+        public DbSet<Semat> Semats { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<FieldOfActivity> FieldOfActivities { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new PersonConfiguration());
+
+            modelBuilder.Configurations.Add(new SematConfiguration());
+            
+            modelBuilder.Configurations.Add(new ProvinceConfiguration());
+            
+            modelBuilder.Configurations.Add(new CompanyConfiguration());
+
+            modelBuilder.Configurations.Add(new FieldOfActivityConfiguration());
+        }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
