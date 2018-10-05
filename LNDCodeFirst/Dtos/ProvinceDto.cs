@@ -9,10 +9,10 @@ namespace LNDCodeFirst.Dtos
     public class ProvinceDto
     {
         public int Id { get; set; }
-
-        public int Shakhes { get; set; }
-
+        
         public string Name { get; set; }
+        
+        public int Shakhes { get; set; }
 
         public string CityCenter { get; set; }
 

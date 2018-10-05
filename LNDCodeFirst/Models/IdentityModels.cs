@@ -44,6 +44,8 @@ namespace LNDCodeFirst.Models
             modelBuilder.Configurations.Add(new CompanyConfiguration());
 
             modelBuilder.Configurations.Add(new FieldOfActivityConfiguration());
+            
+            base.OnModelCreating(modelBuilder);
         }
 
         public ApplicationDbContext()
