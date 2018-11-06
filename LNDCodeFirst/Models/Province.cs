@@ -22,7 +22,7 @@ namespace LNDCodeFirst.Models
         
         public string PreTelCode { get; set; }
 
-        public ICollection<Person> Persons { get; set; }
+        public IList<Person> Persons { get; set; }
 
     }
 }

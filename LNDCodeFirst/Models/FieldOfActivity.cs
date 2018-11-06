@@ -12,7 +12,7 @@ namespace LNDCodeFirst.Models
 
         public string Name { get; set; }
 
-        public ICollection<Company> Companies { get; set; }
+        public IList<Company> Companies { get; set; }
 
     }
 }

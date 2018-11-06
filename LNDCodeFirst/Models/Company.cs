@@ -17,9 +17,9 @@ namespace LNDCodeFirst.Models
 
         public string PreTelCode { get; set; }
 
-        public ICollection<FieldOfActivity> FieldOfActivities { get; set; }      // many to many
+        public IList<FieldOfActivity> FieldOfActivities { get; set; }      // many to many
         
-        public ICollection<Person> Persons { get; set; }                         // one to many
+        public IList<Person> Persons { get; set; }                         // one to many
 
     }
 }

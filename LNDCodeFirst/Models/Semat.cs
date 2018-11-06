@@ -11,6 +11,6 @@ namespace LNDCodeFirst.Models
 
         public string Name { get; set; }
 
-        public ICollection<Person> Persons { get; set; }
+        public IList<Person> Persons { get; set; }
     }
 }
