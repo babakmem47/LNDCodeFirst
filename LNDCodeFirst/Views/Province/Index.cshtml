@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "title";
-    Layout = "~/Views/Home/About.cshtml";
 }
 
 <div class="row">
@@ -16,26 +15,134 @@
 <div class="row">
     <div class="col-lg-1 col-xs-1"></div>
     <div class="col-lg-10 col-xs-10">
-        <table class="table table-bordered table-hover table-striped table-fit-to-content" dir="rtl">
+        <table id="tableOfProvinces" class="table table-bordered table-hover table-striped table-fit-to-content" dir="rtl">
             <thead>
-            <tr class="bg-success text-primary">
-                <th class="text-center">ردیف</th>
-                <th class="text-center">نام منطقه</th>
-                <th class="text-center">شاخص منطقه</th>
-                <th class="text-center">شهر</th>
-                <th class="text-center">آدرس</th>
-                <th class="text-center">ایمیل منطقه</th>
-                <th class="text-center">پیش شماره تلفن</th>
-                <th class="text-center">ویرایش</th>
-                <th class="text-center">حذف</th>
-            </tr>
+                <tr class="bg-success text-primary">
+@*                    <th class="text-center">ردیف</th>*@
+                    <th class="text-center">شاخص منطقه</th>
+                    <th class="text-center">نام منطقه</th>
+                    <th class="text-center">شهر</th>
+                    <th class="text-center">آدرس</th>
+                    <th class="text-center">ایمیل منطقه</th>
+                    <th class="text-center">پیش شماره تلفن</th>
+                    <th class="text-center">ویرایش</th>
+                    <th class="text-center">حذف</th>
+                </tr>
             </thead>
 
-            <tbody>
-            
-            </tbody>
+            <tbody></tbody>
 
         </table>
     </div>
     <div class="col-lg-1 col-xs-1"></div>
 </div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var i = 1;
+            var table = $("#tableOfProvinces").DataTable({
+
+                "pageLength": 60,
+
+                "oLanguage": {
+                    "sSearch": "جستجو  ",
+                    "sSearchPlaceholder": "یه چیزی بنویس ...",
+                    "sLengthMenu": "نمایش  _MENU_  رکورد در جدول",
+                    "decimal": "",
+                    "sEmptyTable": "هیچ داده قابل دسترسی در جدول یافت نشد",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ ورودی",
+                    "sInfoEmpty": "نمایش 0 تا 0 از صفر ورودی",
+                    "sInfoFiltered": "(فیلتر شده از _MAX_ کل ورودی ها)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "sLoadingRecords": "بارگذاری ...",
+                    "sProcessing": "پردازش ...",
+                    "sZeroRecords": "هیچ رکوردی که مطابقت داشته باشد یافت نشد",
+                    "oPaginate": {
+                        "sFirst": "اول",
+                        "sLast": "آخر",
+                        "sNext": "بعدی",
+                        "sPrevious": "قبلی"
+                    }
+                },
+
+                "sDom":
+                    "<'row'<'col-sm-6'f><'col-sm-6'l>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+                "columnDefs": [
+                    { "className": "text-center", "targets": "_all" }
+                ],
+
+                ajax: {
+                    url: "/api/provinces",
+                    dataSrc: ""
+                },
+
+                columns: [
+//                    {
+//                        data: "id",
+//                        render: function () {
+//                            return i++;
+//                        }
+//                    },
+                    {
+                        data: "shakhes"
+                    },
+                    {
+                        data: "name",
+                        render: function (data, type, province) {
+                            return "<a href='/Province/Edit/" + province.id + "'>" + province.name + "</a>";
+                        }
+                    },
+                    
+                    {
+                        data: "cityCenter"
+                    },
+                    {
+                        data: "address"
+                    },
+                    {
+                        data: "email"
+                    },
+                    {
+                        data: "preTelCode"
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, province) {
+                            return "<a href='/Province/Edit/" + province.id + "'>" + "<span class='glyphicon glyphicon-edit' aria-hidden='true'></span>" + "</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-province-id=" + data + "> <span class='glyphicon glyphicon-remove'></span>" + "</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#tableOfProvinces").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("آیا مطمئن هستید که می خواهید این منطقه حذف شود؟",
+                    function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/provinces/" + button.attr("data-province-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    table.row(button.parents("tr")).remove().draw();
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
+}
